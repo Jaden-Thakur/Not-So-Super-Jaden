@@ -1,0 +1,12 @@
+﻿  Entity.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(30,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  main.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(30,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Map.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Map.cpp(90,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Map.cpp(91,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  ShaderProgram.cpp
+  Utility.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Utility.cpp(60,23): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Not-So-Super-Jaden.vcxproj -> C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Debug\Not-So-Super-Jaden.exe
