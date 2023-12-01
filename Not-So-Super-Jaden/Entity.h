@@ -1,3 +1,5 @@
+#pragma once
+
 enum EntityType { PLAYER, PLATFORM, ENEMY };
 enum EnemyType { JUMPY, SPIKY, DASHY };
 enum AIMode { AGGRO, IDLE, PATROL };
