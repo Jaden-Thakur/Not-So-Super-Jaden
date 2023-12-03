@@ -11,7 +11,7 @@
 #include "Level3.h"
 #include "Utility.h"
 
-#define LEVEL_WIDTH 14
+#define LEVEL_WIDTH 20
 #define LEVEL_HEIGHT 8
 
 const char PLAYER_SPRITESHEET_FILEPATH[] = "assets/Player_Spritesheet.png";
@@ -20,14 +20,14 @@ const char MAP_FILEPATH[] = "assets/tileset.png";
 
 unsigned int LEVEL3_DATA[] =
 {
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 2,
+    2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,
+    2, 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 };
 
 Level3::~Level3()
@@ -42,13 +42,13 @@ Level3::~Level3()
 void Level3::initialize()
 {
     GLuint map_texture_id = Utility::load_texture(MAP_FILEPATH);
-    m_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL3_DATA, map_texture_id, 1.0f, 4, 1);
+    m_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL3_DATA, map_texture_id, 1.0f, 9, 1);
 
     // Player Stuff
     // Creation
     m_state.player = new Entity();
     m_state.player->set_entity_type(PLAYER);
-    m_state.player->set_position(glm::vec3(5.0f, 0.0f, 0.0f));
+    m_state.player->set_position(glm::vec3(1.0f, 0.0f, 0.0f));
     m_state.player->set_movement(glm::vec3(0.0f));
     m_state.player->set_speed(2.5f);
     m_state.player->set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
@@ -102,9 +102,9 @@ void Level3::initialize()
      */
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 
-    m_state.bgm = Mix_LoadMUS("assets/dooblydoo.mp3");
+    m_state.bgm = Mix_LoadMUS("assets/mario.mp3");
     Mix_PlayMusic(m_state.bgm, -1);
-    Mix_VolumeMusic(0.5f);
+    Mix_VolumeMusic(7.5f);
 
     m_state.jump_sfx = Mix_LoadWAV("assets/bounce.wav");
 }

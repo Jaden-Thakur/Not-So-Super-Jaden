@@ -182,6 +182,13 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 {
     if (!m_is_active) return;
 
+    if (m_enemy_type == LIFE) {
+        m_model_matrix = glm::mat4(1.0f);
+        m_model_matrix = glm::translate(m_model_matrix, m_position);
+        LOG(m_position.x)
+        return;
+    }
+
     if (this->m_entity_type == ENEMY) {
         this->activate_ai(player, delta_time);
     }
@@ -211,9 +218,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
        
 
-        if (m_enemy_type == DASHY) {
-            
-        }
+       
 
         if (m_is_jumping)
         {
@@ -228,10 +233,15 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
         m_collided_left = false;
         m_collided_right = false;
 
+        m_velocity.x = m_movement.x * m_speed;
 
         // gravity
+
         m_velocity += m_acceleration * delta_time;
-        m_velocity.y -= GRAVITY * delta_time;
+        if (m_entity_type != LIFE) {
+            m_velocity.y -= GRAVITY * delta_time;
+        }
+        
 
 
         m_position.x += m_velocity.x * delta_time;
@@ -331,8 +341,8 @@ void const Entity::check_collision_y(Map* map)
 
     // Probes for tiles below
     glm::vec3 bottom = glm::vec3(m_position.x, m_position.y - (m_height / 2), m_position.z);
-    glm::vec3 bottom_left = glm::vec3(m_position.x - (m_width / 2), m_position.y - (m_height / 2), m_position.z);
-    glm::vec3 bottom_right = glm::vec3(m_position.x + (m_width / 2), m_position.y - (m_height / 2), m_position.z);
+    glm::vec3 bottom_left = glm::vec3(m_position.x - (m_width / 3), m_position.y - (m_height / 2), m_position.z);
+    glm::vec3 bottom_right = glm::vec3(m_position.x + (m_width / 3), m_position.y - (m_height / 2), m_position.z);
 
     float penetration_x = 0;
     float penetration_y = 0;
@@ -371,14 +381,13 @@ void const Entity::check_collision_y(Map* map)
         m_velocity.y = 0;
         m_collided_bottom = true;
 
+
     }
     else if (map->is_solid(bottom_right, &penetration_x, &penetration_y) && m_velocity.y < 0)
     {
         m_position.y += penetration_y;
         m_velocity.y = 0;
         m_collided_bottom = true;
-
-
     }
 
 }
@@ -392,16 +401,17 @@ void const Entity::check_collision_x(Map* map)
     float penetration_x = 0;
     float penetration_y = 0;
 
+
     if (map->is_solid(left, &penetration_x, &penetration_y) && m_velocity.x < 0)
     {
-        LOG("colliding left");
+        
         m_position.x += penetration_x;
         m_velocity.x = 0;
         m_collided_left = true;
     }
     if (map->is_solid(right, &penetration_x, &penetration_y) && m_velocity.x > 0)
     {
-        LOG("colliding right");
+        
         m_position.x -= penetration_x;
         m_velocity.x = 0;
         m_collided_right = true;
@@ -435,6 +445,10 @@ void Entity::render(ShaderProgram* program)
 
     glDisableVertexAttribArray(program->get_position_attribute());
     glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
+
+    m_model_matrix = glm::mat4(1.0f);
+    m_model_matrix = glm::translate(m_model_matrix, m_position);
+    scale();
 }
 
 bool const Entity::check_collision(Entity* other) const

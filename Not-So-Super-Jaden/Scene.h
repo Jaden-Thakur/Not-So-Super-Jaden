@@ -16,6 +16,8 @@
 #include "Entity.h"
 #include "Map.h"
 
+class Scene;
+
 struct GameState
 {
     // ————— GAME OBJECTS ————— //
@@ -28,7 +30,7 @@ struct GameState
     Mix_Chunk *jump_sfx;
     
     // ————— POINTERS TO OTHER SCENES ————— //
-    int next_scene_id;
+    Scene* next_scene;
 };
 
 class Scene {
@@ -46,4 +48,7 @@ public:
     // ————— GETTERS ————— //
     GameState const get_state()             const { return m_state;             }
     int       const get_number_of_enemies() const { return m_number_of_enemies; }
+
+    void set_next_scene(Scene* new_scene) { m_state.next_scene = new_scene; }
+    Scene* get_next_scene() { return m_state.next_scene; }
 };

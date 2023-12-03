@@ -1,6 +1,6 @@
 #pragma once
 
-enum EntityType { PLAYER, PLATFORM, ENEMY };
+enum EntityType { PLAYER, PLATFORM, ENEMY, LIFE};
 enum EnemyType { JUMPY, SPIKY, DASHY };
 enum AIMode { AGGRO, IDLE, PATROL };
 
@@ -102,7 +102,6 @@ public:
 	void move_left() { m_movement.x = -m_speed; };
 	void move_right() { m_movement.x = m_speed; };
 
-	void rotate(float angle);
 
 	void activate();
 	void deactivate();

@@ -1,3 +1,11 @@
-﻿  main.cpp
+﻿  Level1.cpp
 C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(32,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Level1.cpp(105,21): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Level2.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(32,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Level2.cpp(107,21): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Level3.cpp
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(32,18): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Level3.cpp(107,21): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   Not-So-Super-Jaden.vcxproj -> C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Debug\Not-So-Super-Jaden.exe

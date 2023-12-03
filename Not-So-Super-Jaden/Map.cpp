@@ -95,7 +95,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
     if (tile_y < 0 || tile_y >= m_height) return false;
 
     int tile = l_data[(tile_y * m_width) + tile_x];
-    if (tile == 0 || tile == 3 || tile == 4 || tile == 5 || tile == 6) return false;
+    if (tile == 0 || tile == 3 || tile == 4 || tile == 5 || tile == 6 || tile == 7 || tile == 8) return false;
 
     float tile_center_x = (tile_x * m_tile_size);
     float tile_center_y = -(tile_y * m_tile_size);

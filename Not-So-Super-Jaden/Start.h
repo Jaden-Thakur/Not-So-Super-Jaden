@@ -4,7 +4,7 @@
 class Start : public Scene {
 public:
     // ————— STATIC ATTRIBUTES ————— //
-    int ENEMY_COUNT = 0;
+    int ENEMY_COUNT = 1;
 
     // ————— CONSTRUCTOR ————— //
     ~Start();
