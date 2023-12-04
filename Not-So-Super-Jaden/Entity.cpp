@@ -1,6 +1,6 @@
 ﻿/**
 * Author: Jaden Thakur
-* Assignment: Not-So-Super-Jaden
+* Assignment: Platformer
 * Date due: 2023-12-2, 11:59pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -67,6 +67,7 @@ void Entity::activate_ai(Entity* player, float delta_time)
     switch (m_enemy_type) 
     {
     case JUMPY:
+        m_jumping_power = 3 * player->m_jumping_power / 2;
         if (glm::distance(m_position, player->get_position()) > 10) {
             set_mode(PATROL);
             ai_patrol(delta_time);
@@ -92,7 +93,7 @@ void Entity::activate_ai(Entity* player, float delta_time)
         else {
             set_mode(AGGRO);
             ai_attack(player);
-            m_speed = player->m_speed;
+            m_speed = player->m_speed/2;
         }
         break;
     }

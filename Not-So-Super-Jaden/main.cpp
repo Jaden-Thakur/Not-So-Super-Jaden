@@ -1,6 +1,6 @@
 /**
 * Author: Jaden Thakur
-* Assignment: Not-So-Super-Jaden
+* Assignment: Platformer
 * Date due: 2023-12-2, 11:59pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -38,7 +38,7 @@
 #include <cstdlib>
 #include <vector>
 #include "Scene.h"
-#include "Start.h"
+#include "Level0.h"
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
@@ -66,7 +66,7 @@ const float MILLISECONDS_IN_SECOND = 1000.0;
 // ****GLOBALS****
 
 Scene* g_active_scene;
-Start* g_start;
+Level0* g_level_0;
 Level1* g_level_1;
 Level2* g_level_2;
 Level3* g_level_3;
@@ -92,7 +92,12 @@ float g_accumulator = 0.0f;
 
 // UI stuff
 const char HEART_FILEPATH[] = "assets/heart_sprite.png";
+const char FONT_FILEPATH[] = "assets/font.png";
 Entity* lives;
+std::string endscreen_text;
+glm::vec3 font_position;
+GLuint font_texture_id;
+
 
 
 // ****ADDITIONAL FUNCTIONS****
@@ -137,32 +142,32 @@ void initialize()
     // Colors the background as #63ADF2
     glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
-    
-
+    // Font Stuff
+    font_texture_id = Utility::load_texture(FONT_FILEPATH);
     
 
     // ————— LEVEL SETUP ————— //
     g_level_1 = new Level1();
     g_level_2 = new Level2();
     g_level_3 = new Level3();
-    g_start = new Start();
+    g_level_0 = new Level0();
 
-    g_start->m_state.next_scene = g_level_1;
+    g_level_0->m_state.next_scene = g_level_1;
     g_level_1->m_state.next_scene = g_level_2;
     g_level_2->m_state.next_scene = g_level_3;
     g_level_3->m_state.next_scene = g_level_1;
-    switch_to_scene(g_level_1);
+    switch_to_scene(g_level_0);
 
-    if (g_active_scene != g_start) {
+ 
         player = g_active_scene->m_state.player;
         enemies = g_active_scene->m_state.enemies;
-    }
+    
    
     map = g_active_scene->m_state.map;
 
 
     // LIVES SETUP
-    lives = new Entity[3];
+    lives = new Entity[g_life_count];
     for (int i = 0; i < g_life_count; i++) {
         lives[i].set_entity_type(LIFE);
         lives[i].set_position(glm::vec3( i * 0.5 + 1.0f, 0.0f, 0.0f));
@@ -181,9 +186,9 @@ void process_input()
 {
     
     // Stop player from moving without input
-    if (g_active_scene != g_start) {
+ 
         player->set_movement(glm::vec3(0.0f));
-    }
+    
     
 
     // One Click Events
@@ -207,16 +212,16 @@ void process_input()
                 {
                     player->m_is_jumping = true;
                     Mix_PlayChannel(-1, g_active_scene->m_state.jump_sfx, 0);
+                    
                 }
                 break;
-            case SDLK_l:
-                switch_to_scene(g_active_scene->get_next_scene());
-                if (g_active_scene != g_start) {
+            case SDLK_RETURN:
+                if (g_active_scene == g_level_0) {
+                    switch_to_scene(g_active_scene->get_next_scene());
                     player = g_active_scene->m_state.player;
                     enemies = g_active_scene->m_state.enemies;
                     map = g_active_scene->m_state.map;
                 }
-                
                 break;
             default:
                 break;
@@ -229,7 +234,7 @@ void process_input()
 
    
 
-    if (g_active_scene != g_start) {
+ 
 
         // Holding Down Keys
         const Uint8* key_state = SDL_GetKeyboardState(NULL);
@@ -274,7 +279,7 @@ void process_input()
                 )
             );
         }
-    }
+    
     
 }
 
@@ -295,14 +300,14 @@ void update()
 
     while (delta_time >= FIXED_TIMESTEP)
     {
-        if (g_active_scene != g_start) {
+     
             player->update(FIXED_TIMESTEP, player, enemies, 3, map);
             enemies[0].update(FIXED_TIMESTEP, player, NULL, 0, map);
             for (size_t i = 0; i < 3; i++) {
                 lives[i].update(FIXED_TIMESTEP, player, NULL, 0, map);
             }
             delta_time -= FIXED_TIMESTEP;
-        }
+        
     }
 
     g_accumulator = delta_time;
@@ -325,7 +330,7 @@ void update()
     //    g_go = true;
     //}
 
-    if (player->get_position().x >= 17) {
+    if (player->get_position().x >= 17 && player->m_collided_bottom && g_active_scene != g_level_3) {
         player->set_velocity(glm::vec3(0.0f, 0.0f, 0.0f));
         switch_to_scene(g_active_scene->get_next_scene());
         player = g_active_scene->m_state.player;
@@ -333,19 +338,25 @@ void update()
         map = g_active_scene->m_state.map;
     }
 
-    if (player->get_position().x >= 4 && player->get_position().x <= 5 && g_life_count > 0) {
-        player->set_position(glm::vec3(player->get_position().x + 1, player->get_position().y, player->get_position().z));
+    if (player->dead && g_life_count > 0) {
+        player->set_position(glm::vec3(player->get_position().x - 2, player->get_position().y, player->get_position().z));
+        lives[g_life_count - 1].deactivate();
+        g_life_count--;
+        player->dead = false;
+    }
+    if (player->get_position().y < -10 && g_life_count > 0) {
+        player->set_position(glm::vec3(1.0f, 0.0f, 0.0f));
         lives[g_life_count - 1].deactivate();
         g_life_count--;
     }
     
     if (g_life_count == 0) {
-        switch_to_scene(g_start);
+        player->deactivate();
     }
     
 
     g_view_matrix = glm::mat4(1.0f);
-    if (g_active_scene != g_start) {
+ 
         if (player->get_position().x > 5) {
             g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-player->get_position().x + 6, 0.0f, 0.0f));
         }
@@ -359,48 +370,40 @@ void update()
 
     
 
-}
+
 
 void render()
 {
     g_program.set_view_matrix(g_view_matrix);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // deactivate all of the platforms and player on game over
-    /*if (go) {
-        g_state.player->deactivate();
-    }*/
-
-    // render everything except UI
-    /*else {*/
-        /*map->render(&g_program);
-        player->render(&g_program);
-
-        for (size_t i = 0; i < 3; i++) {
-            enemies[i].render(&g_program);
-        }*/
-    //}
     glUseProgram(g_program.get_program_id());
     g_active_scene->render(&g_program); 
-    if (g_active_scene != g_start) {
+    if (g_active_scene != g_level_0) {
         for (size_t i = 0; i < g_life_count; i++) {
             lives[i].render(&g_program);
         }
     }
-
+        
     
 
+    
+     
     
 
     // render UI element based on win or lose
-    /*if (win && go) {
+    if (g_active_scene == g_level_3 && player->get_position().x >= 17 && player->m_collided_bottom) {
         endscreen_text = "You Won!";
-        Utility::draw_text(&g_program, font_texture_id, endscreen_text, 0.5f, 0.000001f, ui_element_position);
+        font_position = glm::vec3(3.5f, -3.0f, 0.0f);
+        Utility::draw_text(&g_program, font_texture_id, endscreen_text, 0.5f, 0.000001f, font_position);
+        player->deactivate();
     }
-    else if (go && !win) {
+    else if (g_life_count == 0) {
         endscreen_text = "You Lost!";
-        Utility::draw_text(&g_program, font_texture_id, endscreen_text, 0.5f, 0.000001f, ui_element_position);
-    }*/
+        font_position = glm::vec3(3.5f, -3.0f, 0.0f);
+        Utility::draw_text(&g_program, font_texture_id, endscreen_text, 0.5f, 0.000001f, font_position);
+        player->deactivate();
+    }
 
 
     // Swap window
@@ -411,7 +414,7 @@ void shutdown()
 {
     SDL_Quit();
 
-    delete g_start;
+    delete g_level_0;
     delete g_level_1;
     delete g_level_2;
     delete g_level_3;

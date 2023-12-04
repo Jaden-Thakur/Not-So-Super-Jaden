@@ -1,6 +1,6 @@
 /**
 * Author: Jaden Thakur
-* Assignment: Not-So-Super-Jaden
+* Assignment: Platformer
 * Date due: 2023-12-2, 11:59pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -15,18 +15,18 @@
 #define LEVEL_HEIGHT 8
 
 const char PLAYER_SPRITESHEET_FILEPATH[] = "assets/Player_Spritesheet.png";
-const char SPIKY_SPRITESHEET_FILEPATH[] = "assets/Spiky_Spritesheet.png";
+const char JUMPY_SPRITESHEET_FILEPATH[] = "assets/Jumpy_Spritesheet.png";
 const char MAP_FILEPATH[] = "assets/tileset.png";
 
 unsigned int LEVEL3_DATA[] =
 {
     2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
-    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 2,
-    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
-    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
     2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 2,
-    2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,
-    2, 1, 1, 1, 1, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2,
+    2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 };
 
@@ -73,28 +73,28 @@ void Level3::initialize()
 
 
     // Enemy Stuff
-    GLuint spiky_texture_id = Utility::load_texture(SPIKY_SPRITESHEET_FILEPATH);
+    GLuint jumpy_texture_id = Utility::load_texture(JUMPY_SPRITESHEET_FILEPATH);
 
     m_state.enemies = new Entity[ENEMY_COUNT];
 
     //Spiky Stuff
     m_state.enemies[0].set_entity_type(ENEMY);
-    m_state.enemies[0].set_enemy_type(SPIKY);
+    m_state.enemies[0].set_enemy_type(JUMPY);
     m_state.enemies[0].set_mode(IDLE);
-    m_state.enemies[0].m_texture_id = spiky_texture_id;
+    m_state.enemies[0].m_texture_id = jumpy_texture_id;
     m_state.enemies[0].set_position(glm::vec3(8.0f, 0.0f, 0.0f));
     m_state.enemies[0].set_movement(glm::vec3(0.0f));
-    m_state.enemies[0].set_speed(1.0f);
+    m_state.enemies[0].set_speed(0.5f);
     m_state.enemies[0].set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
 
-    m_state.enemies[0].m_animation[m_state.enemies[0].LEFT] = new int[1] {0};
-    m_state.enemies[0].m_animation[m_state.enemies[0].RIGHT] = new int[1] {1};
+    m_state.enemies[0].m_animation[m_state.enemies[0].LEFT] = new int[2] { 1, 3};
+    m_state.enemies[0].m_animation[m_state.enemies[0].RIGHT] = new int[2] { 0, 2};
     m_state.enemies[0].m_animation_indices = m_state.enemies[0].m_animation[m_state.enemies[0].LEFT];
     m_state.enemies[0].m_animation_time = 0.0f;
-    m_state.enemies[0].m_animation_frames = 1;
+    m_state.enemies[0].m_animation_frames = 2;
     m_state.enemies[0].m_animation_index = 0;
     m_state.enemies[0].m_animation_cols = 2;
-    m_state.enemies[0].m_animation_rows = 1;
+    m_state.enemies[0].m_animation_rows = 2;
 
 
     /**
@@ -106,7 +106,11 @@ void Level3::initialize()
     Mix_PlayMusic(m_state.bgm, -1);
     Mix_VolumeMusic(7.5f);
 
-    m_state.jump_sfx = Mix_LoadWAV("assets/bounce.wav");
+    m_state.jump_sfx = Mix_LoadWAV("assets/mario_jump.wav");
+    Mix_VolumeChunk(
+        m_state.jump_sfx,
+        1.0f
+    );
 }
 
 void Level3::update(float delta_time)

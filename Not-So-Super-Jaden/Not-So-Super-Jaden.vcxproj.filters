@@ -42,7 +42,7 @@
     <ClCompile Include="Level3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Start.cpp">
+    <ClCompile Include="Level0.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClInclude Include="Level1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Start.h">
+    <ClInclude Include="Level0.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level2.h">
