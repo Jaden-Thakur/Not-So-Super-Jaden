@@ -312,23 +312,6 @@ void update()
 
     g_accumulator = delta_time;
 
-    
-
-    //if (player->dead) {
-    //    //go = true;
-    //}
-
-    //for (size_t i = 0; i < 3; i++) {
-    //    if (enemies[i].m_is_active) {
-    //        //win = false;
-    //        break;
-    //    }
-    //    //win = true;
-    //}
-
-    //if (g_win == true) {
-    //    g_go = true;
-    //}
 
     if (player->get_position().x >= 17 && player->m_collided_bottom && g_active_scene != g_level_3) {
         player->set_velocity(glm::vec3(0.0f, 0.0f, 0.0f));

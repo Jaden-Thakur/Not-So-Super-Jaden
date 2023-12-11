@@ -6,6 +6,6 @@ C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Level1.cpp(131
 C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Entity.h(32,18): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\main.cpp(175,29): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\main.cpp(176,28): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\main.cpp(383,30): warning C4018: '<': signed/unsigned mismatch
+C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\main.cpp(366,30): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
   Not-So-Super-Jaden.vcxproj -> C:\Users\drago\source\repos\Not-So-Super-Jaden\Not-So-Super-Jaden\Debug\Not-So-Super-Jaden.exe
